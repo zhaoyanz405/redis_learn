@@ -23,8 +23,8 @@ def acquire(res='default') -> bool:
     """
     _pid = os.getpid()
 
-    if redis.get(res) != b'1':
-        redis.set(res, value=1, ex=10)
+    if redis.setnx(res, 1):
+        redis.expire(res, 10)
         print('process(pid: %s) has acquired.' % _pid)
         return True
     return False
